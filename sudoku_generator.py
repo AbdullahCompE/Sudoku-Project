@@ -223,6 +223,13 @@ class SudokuGenerator:
     '''
     #James
     def remove_cells(self):
+        cells_removed = 0
+        while cells_removed < self.removed_cells:
+            row = random.randint(0, self.row_length + 1)
+            col = random.randint(0, self.row_length + 1)
+            if self.board[row][col] != 0:
+                self.board[row][col] = 0
+                cells_removed += 1
         pass
 
 '''
