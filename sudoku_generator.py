@@ -222,7 +222,6 @@ class SudokuGenerator:
 	Parameters: None
 	Return: None
     '''
-    #James
     def remove_cells(self):
         cells_removed = 0
         while cells_removed < self.removed_cells:
