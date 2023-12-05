@@ -139,7 +139,11 @@ class SudokuGenerator:
 	Return: None
     '''
     def fill_box(self, row_start, col_start):
-
+        nums = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        random.shuffle(nums)
+        for i in range(row_start, row_start + 3):
+            for j in range(col_start, col_start + 3):
+                self.board[i][j] = nums.pop()
         pass
     
     '''
@@ -150,6 +154,8 @@ class SudokuGenerator:
 	Return: None
     '''
     def fill_diagonal(self):
+        for i in range(0, 9, 3):
+            self.fill_box(i, i)
         pass
 
     '''
@@ -215,6 +221,7 @@ class SudokuGenerator:
 	Parameters: None
 	Return: None
     '''
+    #James
     def remove_cells(self):
         pass
 
@@ -241,4 +248,3 @@ def generate_sudoku(size, removed):
     board = sudoku.get_board()
     return board
 
-generate_sudoku(9, 30)
