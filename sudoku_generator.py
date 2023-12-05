@@ -47,6 +47,8 @@ class SudokuGenerator:
 	Return: None
     '''
     def print_board(self):
+        for row in self.board:
+            print(row)
         pass
 
     '''
@@ -60,6 +62,9 @@ class SudokuGenerator:
 	Return: boolean
     '''
     def valid_in_row(self, row, num):
+        if num not in self.board[row]:
+            return True
+        return False
         pass
 
     '''
@@ -73,6 +78,10 @@ class SudokuGenerator:
 	Return: boolean
     '''
     def valid_in_col(self, col, num):
+        for row in range(9):
+            if num != self.board[row][col]:
+                return True
+            return False
         pass
 
     '''
@@ -88,6 +97,12 @@ class SudokuGenerator:
 	Return: boolean
     '''
     def valid_in_box(self, row_start, col_start, num):
+        for i in range(row_start, row_start + 3):
+            for j in range(col_start, col_start + 3):
+                if num != self.board[i][j]:
+                    return True
+        return False
+
         pass
     
     '''
@@ -101,6 +116,10 @@ class SudokuGenerator:
 	Return: boolean
     '''
     def is_valid(self, row, col, num):
+        if self.valid_in_row(row, num) and self.valid_in_box(row - int(row % 3), col - int(col % 3), num) and self.valid_in_col(col, num):
+            return True
+        return False
+
         pass
 
     '''
