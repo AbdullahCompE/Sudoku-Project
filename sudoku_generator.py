@@ -23,6 +23,10 @@ class SudokuGenerator:
 	None
     '''
     def __init__(self, row_length, removed_cells):
+        self.row_length = 9
+        self.removed_cells = removed_cells
+        self.board = [[0 for i in range(self.row_length)] for i in range(self.row_length)]
+        self.box_length = row_length ** 0.5
         pass
 
     '''
@@ -32,6 +36,7 @@ class SudokuGenerator:
 	Return: list[list]
     '''
     def get_board(self):
+        return self.board
         pass
 
     '''
