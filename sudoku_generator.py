@@ -312,7 +312,7 @@ class Board:
         self.difficulty = difficulty
 
     def draw(self):
-
+        pass
 
 
 
