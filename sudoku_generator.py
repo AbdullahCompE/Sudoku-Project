@@ -367,6 +367,7 @@ class Board:
     def select(self, row, col):
         # Marks the cell at (row, col) in the board as the current selected cell.
         # Once a cell has been selected, the user can edit its value or sketched value
+        for i in range()
         pass
 
     def click(self, x, y):
