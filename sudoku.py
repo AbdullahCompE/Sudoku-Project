@@ -1,6 +1,12 @@
 import pygame, sudoku_generator
 from sudoku_generator import Board
 
+def draw_text():
+    pass
+
+game_over = False
+win = False
+
 WIDTH = 600
 HEIGHT = 600
 # LINE_WIDTH =
@@ -16,22 +22,25 @@ GRAY = (170, 170, 170)
 
 if __name__ == "__main__":
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
-    screen.fill(BACKGROUND_COLOR)
-    game_over = False
-    win = False
+    pygame.display.set_caption("Sudoku")
+
 
 
     #title screen
     pygame.init()
     clock = pygame.time.Clock()
-    pygame.display.set_caption("Sudoku")
+
 
     while True:
         # Process player inputs.
 
-        # gets mouse input
-        #Board.click(pygame.mouse.get_pos())
 
+        screen.fill(BACKGROUND_COLOR)
+
+        #gets difficulty from the buttons on start menu
+
+        difficulty = sudoku_generator.start_menu(screen)
+        print(difficulty)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -39,14 +48,7 @@ if __name__ == "__main__":
                 raise SystemExit
 
         # Do logical updates here.
-        # option = draw_game_start(screen)
-        option = 'easy'
-        if option == 'easy':
-            difficulty = 30
-        elif option == 'medium':
-            difficulty = 40
-        elif option == 'hard':
-            difficulty = 50
+
 
         board = Board(WIDTH, HEIGHT, screen, difficulty)
         board.draw()
@@ -72,12 +74,12 @@ if __name__ == "__main__":
 
 
     # option = draw_game_start(screen)
-    if option == 'easy':
-        difficulty = 30
-    elif option == 'medium':
-        difficulty = 40
-    elif option == 'hard':
-        difficulty = 50
-
-    board = Board(WIDTH, HEIGHT, screen, difficulty)
-    board.draw()
+    # if option == 'easy':
+    #     difficulty = 30
+    # elif option == 'medium':
+    #     difficulty = 40
+    # elif option == 'hard':
+    #     difficulty = 50
+    #
+    # board = Board(WIDTH, HEIGHT, screen, difficulty)
+    # board.draw()

@@ -269,6 +269,31 @@ def generate_sudoku(size, removed):
     return board
 
 
+class Button:
+    def __init__(self, x, y, image, scale):
+        width = image.get_width()
+        height = image.get_height()
+        self.image = pygame.transform.scale(image, (int(width * scale), int(height * scale)))
+        self.rect = self.image.get_rect()
+        self.rect.topleft = (x,y)
+        self.clicked = False
+
+    def draw(self, surface):
+        action = False
+        #get mouse position
+        pos = pygame.mouse.get_pos()
+
+        if self.rect.collidepoint(pos):
+            if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
+                self.clicked = True
+                action = True
+
+            if pygame.mouse.get_pressed()[0] == 0:
+                self.clicked = False
+
+        surface.blit(self.image, (self.rect.x, self.rect.y))
+        return action
+
 class Cell:
     def __init__(self, value, row, col, screen):
         self.value = value
@@ -334,7 +359,7 @@ class Board:
         pygame.draw.line(self.screen, self.line_color_black, ((self.width / 3) * 2, 0),
                          ((self.width / 3) * 2, self.height), self.line_thickness_box)
 
-        pass
+
 
     def select(self, row, col):
         # Marks the cell at (row, col) in the board as the current selected cell.
@@ -368,3 +393,23 @@ class Board:
 
     def check_board(self):
         pass
+
+def start_menu(surface):
+    difficulty = 0
+    # load button images
+    easy_img = pygame.image.load('easy_btn.png').convert_alpha()
+    medium_img = pygame.image.load('medium_btn.png').convert_alpha()
+    hard_img = pygame.image.load('hard_btn.png').convert_alpha()
+
+    # button instances
+    easy_button = Button(50, 200, easy_img, 0.4)
+    medium_button = Button(200, 200, medium_img, 0.4)
+    hard_button = Button(425, 200, hard_img, 0.4)
+
+    if easy_button.draw(surface):
+        difficulty = 30
+    if medium_button.draw(surface):
+        difficulty = 40
+    if hard_button.draw(surface):
+        difficulty = 50
+    return difficulty
