@@ -17,6 +17,7 @@ RED = (255, 0, 0)
 LINE_COLOR = (27, 27, 27)
 TEMP_CHIP_COLOR = (171, 176, 172)
 CHIP_COLOR = (27, 27, 27)
+GRAY = (170, 170, 170)
 
 class SudokuGenerator:
     '''
@@ -287,16 +288,17 @@ class Cell:
     def draw(self):
         # Draws this cell and its nonzero value, otherwise no value displayed
         chip_font = pygame.font.Font(None, 60)
-        # chips 1 to 9
         chip_surfs = [chip_font.render(str(i), 1, LINE_COLOR) for i in range(1, 10)]
         chip_rects = [None] * 9
         for i in range(9):
             chip_rects[i] = chip_surfs[i].get_rect(
-                center=(self.col * SQUARE_SIZE + SQUARE_SIZE // 2, self.row * SQUARE_SIZE + SQUARE_SIZE // 2 + 3))
+                center=(self.col * SQUARE_SIZE + SQUARE_SIZE // 2,
+                        self.row * SQUARE_SIZE + SQUARE_SIZE // 2 + 3))
             self.screen.blit(chip_surfs[i], chip_rects[i])
         if self.selected:
             pygame.draw.rect(screen, RED,
-                             pygame.Rect(self.col * SQUARE_SIZE, self.row * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE), 3)
+                             pygame.Rect(
+                                 self.col * SQUARE_SIZE, self.row * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE), 3)
             self.selected = False
         if self.value != 0:
             chip_rect = chip_rects[self.value - 1]
