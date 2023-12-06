@@ -18,10 +18,13 @@ def draw_text(text, font, text_col, x, y):
     img = font.render(text, True, text_col)
     screen.blit(img, (x, y))
 
+# screen variables
+game_over_screen = False
+win_screen = False
+game_menu_screen = True
+game_running_screen = False
+
 # game variables
-game_over = False
-win = False
-game_menu = True
 enter_key = False
 
 # intialize font
@@ -81,29 +84,33 @@ if __name__ == "__main__":
         # Background Color
         screen.fill(BACKGROUND_COLOR)
 
-        if game_menu:
+        # Print Start menu
+        if game_menu_screen:
             draw_text("Welcome to Sudoku!", font_title, text_color, 50, 150)
             draw_text("Select Difficulty:", font_subtitle, text_color, 150, 350)
             # gets difficulty from the buttons on start menu
             if easy_button.draw(screen):
                 difficulty = 30
-                game_menu = False
+                game_menu_screen = False
+                game_running_screen = True
             if medium_button.draw(screen):
                 difficulty = 40
-                game_menu = False
+                game_menu_screen = False
+                game_running_screen = True
             if hard_button.draw(screen):
                 difficulty = 50
-                game_menu = False
+                game_menu_screen = False
+                game_running_screen = True
 
-        if not game_menu:
+        if game_running_screen:
             board_initialize = sudoku_generator.Board(WIDTH, HEIGHT, screen, difficulty)
             board_initialize.draw()
 
             board = board_initialize.board
             print(board)
             for k in range(50, WIDTH, int(WIDTH / 3)):
-                for i in range(0, 2):
-                    for j in range(0, 2):
+                for i in range(0, 9):
+                    for j in range(0, 9):
                         draw_text(str(board[i][j]), font_title, text_color, k, k+20)
 
             # game-in-progress menu buttons
@@ -115,9 +122,14 @@ if __name__ == "__main__":
             if exit_button.draw(screen):
                 run = False
 
+        if game_over_screen:
+            pass
+
+        if win_screen:
+            pass
 
 
-        # Print Start menu
+
 
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
