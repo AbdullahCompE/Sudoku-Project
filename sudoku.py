@@ -1,14 +1,38 @@
 import pygame, sudoku_generator
-from sudoku_generator import Board
+from pygame.locals import *
+import sys
 
-def draw_text():
-    pass
+def wait():
+    while True:
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN and event.key == K_f:
+                return
 
+pygame.init()
+
+#function to draw text
+def draw_text(text, font, text_col, x, y):
+    img = font.render(text, True, text_col)
+    screen.blit(img, (x, y))
+
+# game variables
 game_over = False
 win = False
+game_menu = True
+enter_key = False
+
+# intialize font
+font_title = pygame.font.Font('freesansbold.ttf', 50)
+font_subtitle = pygame.font.Font('freesansbold.ttf', 40)
+text_color = (0, 0, 0)
+
+difficulty = 0
 
 WIDTH = 600
-HEIGHT = 600
+HEIGHT = 700
 # LINE_WIDTH =
 # BOARD_ROWS =
 # BOARD_COLS =
@@ -26,23 +50,80 @@ if __name__ == "__main__":
 
 
 
+    # load button images
+    easy_img = pygame.image.load('easy_btn.png').convert_alpha()
+    medium_img = pygame.image.load('medium_btn.png').convert_alpha()
+    hard_img = pygame.image.load('hard_btn.png').convert_alpha()
+    reset_img = pygame.image.load('reset_btn.png').convert_alpha()
+    restart_img = pygame.image.load('restart_btn.png').convert_alpha()
+    exit_img = pygame.image.load('exit_btn.png').convert_alpha()
+
+    # button instances
+    easy_button = sudoku_generator.Button(50, 450, easy_img, 0.4)
+    medium_button = sudoku_generator.Button(200, 450, medium_img, 0.4)
+    hard_button = sudoku_generator.Button(425, 450, hard_img, 0.4)
+    reset_button = sudoku_generator.Button(25, 630, reset_img, 0.4)
+    restart_button = sudoku_generator.Button(210, 630, restart_img, 0.4)
+    exit_button = sudoku_generator.Button(450, 630, exit_img, 0.4)
+
+
+
+
+
     #title screen
-    pygame.init()
-    clock = pygame.time.Clock()
 
+    #clock = pygame.time.Clock()
 
-    while True:
+    run = True
+    while run:
         # Process player inputs.
 
-
+        # Background Color
         screen.fill(BACKGROUND_COLOR)
 
-        #gets difficulty from the buttons on start menu
+        if game_menu:
+            draw_text("Welcome to Sudoku!", font_title, text_color, 50, 150)
+            draw_text("Select Difficulty:", font_subtitle, text_color, 150, 350)
+            # gets difficulty from the buttons on start menu
+            if easy_button.draw(screen):
+                difficulty = 30
+                game_menu = False
+            if medium_button.draw(screen):
+                difficulty = 40
+                game_menu = False
+            if hard_button.draw(screen):
+                difficulty = 50
+                game_menu = False
 
-        difficulty = sudoku_generator.start_menu(screen)
-        print(difficulty)
+        if not game_menu:
+            board_initialize = sudoku_generator.Board(WIDTH, HEIGHT, screen, difficulty)
+            board_initialize.draw()
+
+            board = board_initialize.board
+            print(board)
+            for k in range(50, WIDTH, int(WIDTH / 3)):
+                for i in range(0, 2):
+                    for j in range(0, 2):
+                        draw_text(str(board[i][j]), font_title, text_color, k, k+20)
+
+            # game-in-progress menu buttons
+            if reset_button.draw(screen):
+                pass
+            if restart_button.draw(screen):
+                sudoku_generator.Board.reset_to_original()
+
+            if exit_button.draw(screen):
+                run = False
+
+
+
+        # Print Start menu
 
         for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RETURN:
+                    enter_key = True
+
             if event.type == pygame.QUIT:
                 pygame.quit()
                 raise SystemExit
@@ -50,18 +131,16 @@ if __name__ == "__main__":
         # Do logical updates here.
 
 
-        board = Board(WIDTH, HEIGHT, screen, difficulty)
-        board.draw()
+
 
         # Render the graphics here.
         # ...
+        pygame.display.update()
 
-        pygame.display.flip()  # Refresh on-screen display
-        clock.tick(60)  # wait until next frame (at 60 FPS)
 
 
     chip_font = pygame.font.Font(None, 35)
-    chip_surfs_1 = [chip_font.render(str(i), 1, Gray) for i in range(1, 10)]
+    chip_surfs_1 = [chip_font.render(str(i), 1, GRAY) for i in range(1, 10)]
     chip_1_surf_1 = chip_surfs_1[0]
     chip_2_surf_1 = chip_surfs_1[1]
     chip_3_surf_1 = chip_surfs_1[2]

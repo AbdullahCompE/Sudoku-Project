@@ -343,21 +343,24 @@ class Board:
         self.line_thickness_box = 5
         self.line_color_black = (0, 0, 0)
         self.line_color_grey = (132, 132, 132)
+        self.menu_space = 100
 
     def draw(self):
+        # Horizontal thin lines
+        for i in range(1, 9):
+            pygame.draw.line(self.screen, self.line_color_grey, ((self.width / 9) * i, 0), ((self.width / 9) * i, self.height - self.menu_space), self.line_thickness_cell)
+        # vertical thin lines
+            pygame.draw.line(self.screen, self.line_color_grey, (0, ((self.height-self.menu_space) / 9) * i), (self.width, ((self.height - self.menu_space)/ 9) * i), self.line_thickness_cell)
 
-        for i in range(1, 9):
-            pygame.draw.line(self.screen, self.line_color_grey, ((self.width / 9) * i, 0), ((self.width / 9) * i, self.height), self.line_thickness_cell)
-        for i in range(1, 9):
-            pygame.draw.line(self.screen, self.line_color_grey, (0, (self.height / 9) * i), (self.width, (self.height / 9) * i), self.line_thickness_cell)
-        pygame.draw.line(self.screen, self.line_color_black, (0, self.height / 3), (self.width, self.height / 3),
-                         self.line_thickness_box)
-        pygame.draw.line(self.screen, self.line_color_black, (0, (self.height / 3) * 2),
-                         (self.width, (self.height / 3) * 2), self.line_thickness_box)
-        pygame.draw.line(self.screen, self.line_color_black, (self.width / 3, 0), (self.width / 3, self.height),
-                         self.line_thickness_box)
-        pygame.draw.line(self.screen, self.line_color_black, ((self.width / 3) * 2, 0),
-                         ((self.width / 3) * 2, self.height), self.line_thickness_box)
+        # Thick lines
+        for i in range(1, 4):
+            # Horizontal
+            pygame.draw.line(self.screen, self.line_color_black, (0, ((self.height - self.menu_space) / 3) * i),
+                             (self.width, ((self.height - self.menu_space) / 3) * i), self.line_thickness_box)
+        #vertical
+        for i in range(1, 3):
+            pygame.draw.line(self.screen, self.line_color_black, ((self.width / 3) * i, 0),
+                             ((self.width / 3) * i, self.height - self.menu_space), self.line_thickness_box)
 
 
 
@@ -394,22 +397,3 @@ class Board:
     def check_board(self):
         pass
 
-def start_menu(surface):
-    difficulty = 0
-    # load button images
-    easy_img = pygame.image.load('easy_btn.png').convert_alpha()
-    medium_img = pygame.image.load('medium_btn.png').convert_alpha()
-    hard_img = pygame.image.load('hard_btn.png').convert_alpha()
-
-    # button instances
-    easy_button = Button(50, 200, easy_img, 0.4)
-    medium_button = Button(200, 200, medium_img, 0.4)
-    hard_button = Button(425, 200, hard_img, 0.4)
-
-    if easy_button.draw(surface):
-        difficulty = 30
-    if medium_button.draw(surface):
-        difficulty = 40
-    if hard_button.draw(surface):
-        difficulty = 50
-    return difficulty
