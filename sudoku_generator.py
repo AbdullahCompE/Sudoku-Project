@@ -6,6 +6,18 @@ https://www.geeksforgeeks.org/program-sudoku-generator/
 
 """
 
+# WIDTH =
+# HEIGHT =
+# LINE_WIDTH =
+# BOARD_ROWS =
+# BOARD_COLS =
+# SQUARE_SIZE =
+BACKGROUND_COLOR = (255, 255, 255)
+RED = (255, 0, 0)
+LINE_COLOR = (27, 27, 27)
+TEMP_CHIP_COLOR = (171, 176, 172)
+CHIP_COLOR = (27, 27, 27)
+
 class SudokuGenerator:
     '''
 	create a sudoku board - initialize class variables and set up the 2D board
@@ -256,6 +268,41 @@ def generate_sudoku(size, removed):
     return board
 
 
+class Cell:
+    def __init__(self, value, row, col, screen):
+        self.value = value
+        self.row = row
+        self.col = col
+        self.screen = screen
+
+        self.sketched_value = value
+        self.selected = False
+
+    def set_cell_value(self, value):
+        self.value = value
+
+    def set_sketched_value(self, value):
+        self.sketched_value = value
+
+    def draw(self):
+        # Draws this cell and its nonzero value, otherwise no value displayed
+        chip_font = pygame.font.Font(None, 60)
+        # chips 1 to 9
+        chip_surfs = [chip_font.render(str(i), 1, LINE_COLOR) for i in range(1, 10)]
+        chip_rects = [None] * 9
+        for i in range(9):
+            chip_rects[i] = chip_surfs[i].get_rect(
+                center=(self.col * SQUARE_SIZE + SQUARE_SIZE // 2, self.row * SQUARE_SIZE + SQUARE_SIZE // 2 + 3))
+            self.screen.blit(chip_surfs[i], chip_rects[i])
+        if self.selected:
+            pygame.draw.rect(screen, RED,
+                             pygame.Rect(self.col * SQUARE_SIZE, self.row * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE), 3)
+            self.selected = False
+        if self.value != 0:
+            chip_rect = chip_rects[self.value - 1]
+            self.screen.blit(chip_surfs[self.value - 1], chip_rect)
+        pygame.display.update()
+
 
 class Board:
     def __init__(self, width, height, screen, difficulty):
@@ -265,52 +312,8 @@ class Board:
         self.difficulty = difficulty
 
     def draw(self):
-        pass
-
-    def select(self, row, col):
-        pass
-
-    def click(self, x, y):
-        pass
-
-    def clear(self):
-        pass
-    def sketch(self, value):
-        pass
-    def place_number(self, value):
-        pass
-    def reset_to_original(self):
-        pass
-
-    def is_full(self):
-        pass
-
-    def update_board(self):
-        pass
-    def find_empty(self):
-        pass
-
-    def check_board(self):
-        pass
 
 
 
-class Cell:
-    def __init__(self, value, row, col, screen):
-        self.value = value
-        self.row = row
-        self.col = col
-        self.screen = pygame.display.set_mode((row, col))
 
-    def set_cell_value(self, value):
-        self.value = value
-
-    def set_sketched_value(self, value):
-        self.value = value
-
-    def draw(self):
-        # Draws this cell, along with the value inside it.
-        # If this cell has a nonzero value, that value is displayed.
-        # Otherwise, no value is displayed in the cell.
-        # The cell is outlined red if it is currently selected.
-        pass
+    pass
