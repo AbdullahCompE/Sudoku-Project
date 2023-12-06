@@ -268,6 +268,30 @@ def generate_sudoku(size, removed):
     board = sudoku.get_board()
     return board
 
+class Click_cell:
+    def __init__(self, x, y, image, scale):
+        width = image.get_width()
+        height = image.get_height()
+        self.image = pygame.transform.scale(image, (int(width * scale), int(height * scale)))
+        self.rect = self.image.get_rect()
+        self.rect.topleft = (x,y)
+        self.clicked = False
+    def draw(self, surface):
+        action = False
+        #get mouse position
+        pos = pygame.mouse.get_pos()
+
+        if self.rect.collidepoint(pos):
+            if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
+                self.clicked = True
+                action = True
+
+            if pygame.mouse.get_pressed()[0] == 0:
+                self.clicked = False
+
+        surface.blit(self.image, (self.rect.x, self.rect.y))
+        return action
+    pass
 
 class Button:
     def __init__(self, x, y, image, scale):
@@ -303,6 +327,7 @@ class Cell:
 
         self.sketched_value = value
         self.selected = False
+        self.line_color_grey = (132, 132, 132)
 
     def set_cell_value(self, value):
         self.value = value
@@ -311,24 +336,53 @@ class Cell:
         self.sketched_value = value
 
     def draw(self):
-        # Draws this cell and its nonzero value, otherwise no value displayed
-        chip_font = pygame.font.Font(None, 60)
-        chip_surfs = [chip_font.render(str(i), 1, LINE_COLOR) for i in range(1, 10)]
-        chip_rects = [None] * 9
-        for i in range(9):
-            chip_rects[i] = chip_surfs[i].get_rect(
-                center=(self.col * SQUARE_SIZE + SQUARE_SIZE // 2,
-                        self.row * SQUARE_SIZE + SQUARE_SIZE // 2 + 3))
-            self.screen.blit(chip_surfs[i], chip_rects[i])
-        if self.selected:
-            pygame.draw.rect(screen, RED,
-                             pygame.Rect(
-                                 self.col * SQUARE_SIZE, self.row * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE), 3)
-            self.selected = False
-        if self.value != 0:
-            chip_rect = chip_rects[self.value - 1]
-            self.screen.blit(chip_surfs[self.value - 1], chip_rect)
-        pygame.display.update()
+        cell_size = 67  # Define the size of each cell
+        cell_x = self.col * cell_size
+        cell_y = self.row * cell_size
+        self.clicked = False
+
+        pygame.draw.rect(self.screen, self.line_color_grey, (cell_x, cell_y, cell_size, cell_size),
+                         1)  # Example rectangle for cell
+        font = pygame.font.Font('freesansbold.ttf', 50)
+        text = font.render(str(self.value), True, (0, 0, 0))  # Example cell value text
+        self.text_rect = text.get_rect(center=(cell_x + cell_size // 2, cell_y + cell_size // 2))  # Example text position
+
+
+        action = False
+        # get mouse position
+        pos = pygame.mouse.get_pos()
+
+        if self.text_rect.collidepoint(pos):
+            if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
+                self.clicked = True
+                action = True
+
+            if pygame.mouse.get_pressed()[0] == 0:
+                self.clicked = False
+
+        #surface.blit(self.image, (self.rect.x, self.rect.y))
+        self.screen.blit(text, self.text_rect)  # Drawing the text on the cell
+        return action
+
+    # def draw(self):
+    #     # Draws this cell and its nonzero value, otherwise no value displayed
+    #     chip_font = pygame.font.Font(None, 60)
+    #     chip_surfs = [chip_font.render(str(i), 1, LINE_COLOR) for i in range(1, 10)]
+    #     chip_rects = [None] * 9
+    #     for i in range(9):
+    #         chip_rects[i] = chip_surfs[i].get_rect(
+    #             center=(self.col * SQUARE_SIZE + SQUARE_SIZE // 2,
+    #                     self.row * SQUARE_SIZE + SQUARE_SIZE // 2 + 3))
+    #         self.screen.blit(chip_surfs[i], chip_rects[i])
+    #     if self.selected:
+    #         pygame.draw.rect(screen, RED,
+    #                          pygame.Rect(
+    #                              self.col * SQUARE_SIZE, self.row * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE), 3)
+    #         self.selected = False
+    #     if self.value != 0:
+    #         chip_rect = chip_rects[self.value - 1]
+    #         self.screen.blit(chip_surfs[self.value - 1], chip_rect)
+    #     pygame.display.update()
 
 
 class Board:
@@ -347,10 +401,10 @@ class Board:
 
     def draw(self):
         # Horizontal thin lines
-        for i in range(1, 9):
-            pygame.draw.line(self.screen, self.line_color_grey, ((self.width / 9) * i, 0), ((self.width / 9) * i, self.height - self.menu_space), self.line_thickness_cell)
-        # vertical thin lines
-            pygame.draw.line(self.screen, self.line_color_grey, (0, ((self.height-self.menu_space) / 9) * i), (self.width, ((self.height - self.menu_space)/ 9) * i), self.line_thickness_cell)
+        # for i in range(1, 9):
+        #     pygame.draw.line(self.screen, self.line_color_grey, ((self.width / 9) * i, 0), ((self.width / 9) * i, self.height - self.menu_space), self.line_thickness_cell)
+        # # vertical thin lines
+        #     pygame.draw.line(self.screen, self.line_color_grey, (0, ((self.height-self.menu_space) / 9) * i), (self.width, ((self.height - self.menu_space)/ 9) * i), self.line_thickness_cell)
 
         # Thick lines
         for i in range(1, 4):

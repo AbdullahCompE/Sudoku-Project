@@ -71,6 +71,7 @@ if __name__ == "__main__":
     restart_button = sudoku_generator.Button(210, 630, restart_img, 0.4)
     exit_button = sudoku_generator.Button(450, 630, exit_img, 0.4)
 
+    cell_button = sudoku_generator.Button(450, 630, exit_img, 0.4)
 
 
 
@@ -117,9 +118,20 @@ if __name__ == "__main__":
             for i in range(0, 9):
                 for j in range(0, 9):
                     if board[i][j] == 0:
+                        active_cell = sudoku_generator.Cell('', i, j, screen)
+                        #active_cellfont.render(str(self.value), True, (0, 0, 0))
+                        #active_cell.draw()
+                        if active_cell.draw():
+                            print(active_cell.draw())
                         continue
                     else:
-                        draw_text(str(board[i][j]), font_title, text_color, i * 67 + 20, j*67 + 10)
+                        #draw_text(str(board[i][j]), font_title, text_color, i * 67 + 20, j*67 + 10)
+                        active_cell = sudoku_generator.Cell(board[i][j], i, j, screen)
+                        if active_cell.draw():
+                            print(active_cell.draw())
+            board_initialize.draw()
+
+
 
             # game-in-progress menu buttons
             if reset_button.draw(screen):
