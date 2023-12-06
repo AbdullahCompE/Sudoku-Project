@@ -1,8 +1,8 @@
 import pygame, sudoku_generator
+from sudoku_generator import Board
 
-
-WIDTH = 500
-HEIGHT = 400
+WIDTH = 600
+HEIGHT = 600
 # LINE_WIDTH =
 # BOARD_ROWS =
 # BOARD_COLS =
@@ -20,6 +20,7 @@ if __name__ == "__main__":
     game_over = False
     win = False
 
+
     #title screen
     pygame.init()
     clock = pygame.time.Clock()
@@ -27,6 +28,11 @@ if __name__ == "__main__":
 
     while True:
         # Process player inputs.
+
+        # gets mouse input
+        #Board.click(pygame.mouse.get_pos())
+
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -34,6 +40,7 @@ if __name__ == "__main__":
 
         # Do logical updates here.
         # option = draw_game_start(screen)
+        option = 'easy'
         if option == 'easy':
             difficulty = 30
         elif option == 'medium':

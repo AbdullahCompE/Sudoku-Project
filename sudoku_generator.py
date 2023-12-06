@@ -312,8 +312,28 @@ class Board:
         self.height = height
         self.screen = screen
         self.difficulty = difficulty
+        self.board = generate_sudoku(9, difficulty)
+
+        self.line_thickness_cell = 2
+        self.line_thickness_box = 5
+        self.line_color_black = (0, 0, 0)
+        self.line_color_grey = (132, 132, 132)
 
     def draw(self):
+
+        for i in range(1, 9):
+            pygame.draw.line(self.screen, self.line_color_grey, ((self.width / 9) * i, 0), ((self.width / 9) * i, self.height), self.line_thickness_cell)
+        for i in range(1, 9):
+            pygame.draw.line(self.screen, self.line_color_grey, (0, (self.height / 9) * i), (self.width, (self.height / 9) * i), self.line_thickness_cell)
+        pygame.draw.line(self.screen, self.line_color_black, (0, self.height / 3), (self.width, self.height / 3),
+                         self.line_thickness_box)
+        pygame.draw.line(self.screen, self.line_color_black, (0, (self.height / 3) * 2),
+                         (self.width, (self.height / 3) * 2), self.line_thickness_box)
+        pygame.draw.line(self.screen, self.line_color_black, (self.width / 3, 0), (self.width / 3, self.height),
+                         self.line_thickness_box)
+        pygame.draw.line(self.screen, self.line_color_black, ((self.width / 3) * 2, 0),
+                         ((self.width / 3) * 2, self.height), self.line_thickness_box)
+
         pass
 
     def select(self, row, col):
@@ -322,6 +342,7 @@ class Board:
         pass
 
     def click(self, x, y):
+
         pass
 
     def clear(self):
