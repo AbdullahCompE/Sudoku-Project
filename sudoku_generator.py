@@ -314,4 +314,34 @@ class Board:
     def draw(self):
         pass
 
+    def select(self, row, col):
+        # Marks the cell at (row, col) in the board as the current selected cell.
+        # Once a cell has been selected, the user can edit its value or sketched value
+        pass
 
+    def click(self, x, y):
+        pass
+
+    def clear(self):
+        pass
+
+    def sketch(self, value):
+        pass
+
+    def place_number(self, value):
+        pass
+
+    def reset_to_original(self):
+        pass
+
+    def is_full(self):
+        pass
+
+    def update_board(self):
+        pass
+
+    def find_empty(self):
+        pass
+
+    def check_board(self):
+        pass
