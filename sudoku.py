@@ -24,8 +24,10 @@ win_screen = False
 game_menu_screen = True
 game_running_screen = False
 
+
 # game variables
 enter_key = False
+initialized_board = True
 
 # intialize font
 font_title = pygame.font.Font('freesansbold.ttf', 50)
@@ -91,6 +93,7 @@ if __name__ == "__main__":
             # gets difficulty from the buttons on start menu
             if easy_button.draw(screen):
                 difficulty = 30
+
                 game_menu_screen = False
                 game_running_screen = True
             if medium_button.draw(screen):
@@ -103,21 +106,29 @@ if __name__ == "__main__":
                 game_running_screen = True
 
         if game_running_screen:
-            board_initialize = sudoku_generator.Board(WIDTH, HEIGHT, screen, difficulty)
+            if initialized_board:
+                board_initialize = sudoku_generator.Board(WIDTH, HEIGHT, screen, difficulty)
+                initialized_board = False
             board_initialize.draw()
 
             board = board_initialize.board
-            print(board)
-            for k in range(50, WIDTH, int(WIDTH / 3)):
-                for i in range(0, 9):
-                    for j in range(0, 9):
-                        draw_text(str(board[i][j]), font_title, text_color, k, k+20)
+            #print(board)
+
+            for i in range(0, 9):
+                for j in range(0, 9):
+                    if board[i][j] == 0:
+                        continue
+                    else:
+                        draw_text(str(board[i][j]), font_title, text_color, i * 67 + 20, j*67 + 10)
 
             # game-in-progress menu buttons
             if reset_button.draw(screen):
+                sudoku_generator.Board.reset_to_original()
                 pass
             if restart_button.draw(screen):
-                sudoku_generator.Board.reset_to_original()
+                game_running_screen = False
+                game_menu_screen = True
+                initialized_board = True
 
             if exit_button.draw(screen):
                 run = False

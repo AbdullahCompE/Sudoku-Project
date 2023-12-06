@@ -337,7 +337,7 @@ class Board:
         self.height = height
         self.screen = screen
         self.difficulty = difficulty
-        self.board = generate_sudoku(9, difficulty)
+        self.board = generate_sudoku(9, self.difficulty)
 
         self.line_thickness_cell = 2
         self.line_thickness_box = 5
