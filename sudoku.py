@@ -36,8 +36,8 @@ text_color = (0, 0, 0)
 
 difficulty = 0
 
-WIDTH = 600
-HEIGHT = 700
+WIDTH = 630
+HEIGHT = 730
 # LINE_WIDTH =
 # BOARD_ROWS =
 # BOARD_COLS =
@@ -67,9 +67,9 @@ if __name__ == "__main__":
     easy_button = sudoku_generator.Button(50, 450, easy_img, 0.4)
     medium_button = sudoku_generator.Button(200, 450, medium_img, 0.4)
     hard_button = sudoku_generator.Button(425, 450, hard_img, 0.4)
-    reset_button = sudoku_generator.Button(25, 630, reset_img, 0.4)
-    restart_button = sudoku_generator.Button(210, 630, restart_img, 0.4)
-    exit_button = sudoku_generator.Button(450, 630, exit_img, 0.4)
+    reset_button = sudoku_generator.Button(25, 660, reset_img, 0.4)
+    restart_button = sudoku_generator.Button(225, 660, restart_img, 0.4)
+    exit_button = sudoku_generator.Button(475, 660, exit_img, 0.4)
 
     cell_button = sudoku_generator.Button(450, 630, exit_img, 0.4)
 
@@ -108,7 +108,7 @@ if __name__ == "__main__":
 
         if game_running_screen:
             if initialized_board:
-                board_initialize = sudoku_generator.Board(WIDTH, HEIGHT, screen, difficulty)
+                board_initialize = sudoku_generator.Board(9, 9, screen, difficulty)
                 initialized_board = False
             board_initialize.draw()
 

@@ -336,7 +336,7 @@ class Cell:
         self.sketched_value = value
 
     def draw(self):
-        cell_size = 67  # Define the size of each cell
+        cell_size = 70  # Define the size of each cell
         cell_x = self.col * cell_size
         cell_y = self.row * cell_size
         self.clicked = False
@@ -387,8 +387,8 @@ class Cell:
 
 class Board:
     def __init__(self, width, height, screen, difficulty):
-        self.width = width
-        self.height = height
+        self.width = width *70
+        self.height = height * 70 +100
         self.screen = screen
         self.difficulty = difficulty
         self.board = generate_sudoku(9, self.difficulty)
