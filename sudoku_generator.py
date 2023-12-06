@@ -365,16 +365,25 @@ class Board:
 
 
     def select(self, row, col):
-        # Marks the cell at (row, col) in the board as the current selected cell.
-        # Once a cell has been selected, the user can edit its value or sketched value
-        pass
+        # deselect previous cell
+        self.cells[self.selected_row][self.selected_col].selected = True
+
+        # select a new cell
+        if row in range(9) and col in range(9):
+            self.row = row
+            self.col = col
+        self.cells[self.selected_row][self.selected_col].selected = True
 
     def click(self, x, y):
-
-        pass
+        width_cell = self.width // 9
+        height_cell = self.height // 9
+        click_row = x // width_cell
+        click_col = y // height_cell
+        cell = (click_row, click_col)
+        return cell
 
     def clear(self):
-        pass
+
 
     def sketch(self, value):
         pass
