@@ -28,6 +28,7 @@ game_running_screen = False
 # game variables
 enter_key = False
 initialized_board = True
+x, y = 1, 1
 
 # intialize font
 font_title = pygame.font.Font('freesansbold.ttf', 50)
@@ -63,6 +64,8 @@ if __name__ == "__main__":
     restart_img = pygame.image.load('restart_btn.png').convert_alpha()
     exit_img = pygame.image.load('exit_btn.png').convert_alpha()
 
+
+
     # button instances
     easy_button = sudoku_generator.Button(50, 450, easy_img, 0.4)
     medium_button = sudoku_generator.Button(200, 450, medium_img, 0.4)
@@ -71,7 +74,7 @@ if __name__ == "__main__":
     restart_button = sudoku_generator.Button(225, 660, restart_img, 0.4)
     exit_button = sudoku_generator.Button(475, 660, exit_img, 0.4)
 
-    cell_button = sudoku_generator.Button(450, 630, exit_img, 0.4)
+
 
 
 
@@ -111,25 +114,47 @@ if __name__ == "__main__":
                 board_initialize = sudoku_generator.Board(9, 9, screen, difficulty)
                 initialized_board = False
             board_initialize.draw()
+            initial_board = board_initialize.board
+            board = initial_board.copy()
 
-            board = board_initialize.board
             #print(board)
 
             for i in range(0, 9):
                 for j in range(0, 9):
-                    if board[i][j] == 0:
-                        active_cell = sudoku_generator.Cell('', i, j, screen)
-                        #active_cellfont.render(str(self.value), True, (0, 0, 0))
-                        #active_cell.draw()
+                    if initial_board[i][j] == 0:
+                        active_cell = sudoku_generator.Cell(' ', i, j, screen)
+
                         if active_cell.draw():
-                            print(active_cell.draw())
+                            y, x = active_cell.draw()
+
                         continue
                     else:
-                        #draw_text(str(board[i][j]), font_title, text_color, i * 67 + 20, j*67 + 10)
+
                         active_cell = sudoku_generator.Cell(board[i][j], i, j, screen)
+
                         if active_cell.draw():
-                            print(active_cell.draw())
+                            y, x = active_cell.draw()
+
+
+            for i in range(0, 9):
+                for j in range(0, 9):
+                    if board[i][j] == 0:
+                        active_cell = sudoku_generator.Cell(' ', i, j, screen)
+
+                        if active_cell.draw():
+                            y, x = active_cell.draw()
+
+                        continue
+                    else:
+
+                        active_cell = sudoku_generator.Cell(board[i][j], i, j, screen)
+
+                        if active_cell.draw():
+                            y, x = active_cell.draw()
+
+
             board_initialize.draw()
+            board_initialize.highlight_cell(x, y)
 
 
 
@@ -158,6 +183,24 @@ if __name__ == "__main__":
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     enter_key = True
+                if event.key == pygame.K_1:
+                    board[x][y]= 1
+                if event.key == pygame.K_2:
+                    board[x][y]= 2
+                if event.key == pygame.K_3:
+                    board[x][y]= 3
+                if event.key == pygame.K_4:
+                    board[x][y]= 4
+                if event.key == pygame.K_5:
+                    board[x][y]= 5
+                if event.key == pygame.K_6:
+                    board[x][y]= 6
+                if event.key == pygame.K_7:
+                    board[x][y]= 7
+                if event.key == pygame.K_8:
+                    board[x][y]= 8
+                if event.key == pygame.K_9:
+                    board[x][y]= 9
 
             if event.type == pygame.QUIT:
                 pygame.quit()
