@@ -367,12 +367,18 @@ class Board:
     def select(self, row, col):
         # Marks the cell at (row, col) in the board as the current selected cell.
         # Once a cell has been selected, the user can edit its value or sketched value
-        for i in range()
-        pass
+        for i in range:
+            pass
 
     def click(self, x, y):
-
-        pass
+        if 0 <= x < self.width and 0<= y < self.height:
+            cell_width = self.width // 9
+            cell_height = self.height // 9
+            row = y // cell_height
+            col = x // cell_width
+            return (row, col)
+        else:
+            return None
 
     def clear(self):
         pass
@@ -384,17 +390,45 @@ class Board:
         pass
 
     def reset_to_original(self):
-        pass
+        for i in range(9):
+            for j in range(9):
+                self.cells[row][col].reset_to_original()
 
     def is_full(self):
-        pass
+        for i in range(9):
+            for j in range(9):
+                if self.cells[row][col].get_value() == 0:
+                    return False
 
     def update_board(self):
-        pass
+        for i in range(9):
+            for j in range(9):
+                self.cells[row][col].update()
 
     def find_empty(self):
-        pass
+        for i in range(9):
+            for j in range(9):
+                if self.cells[row][col].get_value() == 0:
+                    return (row, col)
 
     def check_board(self):
-        pass
+        for i in range(9):
+            values = set()
+            for j in range(9):
+                value = self.cells[row][col].get_value()
+                if value != 0:
+                    if value in values:
+                        return False
+                    values.add(value)
 
+        for i in range(3):
+            for j in range(3):
+                values = set()
+                for row in range(i * 3, (i + 1) * 3):
+                    for col in range(j * 3, (j + 1) * 3):
+                        value = self.cells[row][col].get_value()
+                        if value != 0:
+                            if value in values:
+                                return False
+                            values.add(value)
+        return True
