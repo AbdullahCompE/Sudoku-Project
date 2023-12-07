@@ -103,15 +103,17 @@ if __name__ == "__main__":
             if initialized_board:
                 board_initialize = sudoku_generator.Board(9, 9, screen, difficulty)
                 initialized_board = False
+                board = board_initialize.board
+                board_copied = board_initialize.board.copy()
             board_initialize.draw()
-            board = board_initialize.board
+            #board = board_initialize.board
 
-            if not board_copy:
-                board_copied = board.copy()
-                board_copy = True
+
 
             print(board)
             print(board_copied)
+
+
 
             for i in range(0, 9):
                 for j in range(0, 9):
@@ -129,21 +131,21 @@ if __name__ == "__main__":
                         if active_cell.draw():
                             active_cell.draw()
 
-            for i in range(0, 9):
-                for j in range(0, 9):
-                    if board_copied[i][j] == 0:
-                        active_cell = sudoku_generator.Cell(' ', i, j, screen, (0, 0, 0))
-
-                        if active_cell.draw():
-                            y, x = active_cell.draw()
-
-                        continue
-                    else:
-
-                        active_cell = sudoku_generator.Cell(board[i][j], i, j, screen, (0, 0, 0))
-
-                        if active_cell.draw():
-                            active_cell.draw()
+            # for i in range(0, 9):
+            #     for j in range(0, 9):
+            #         if board_copied[i][j] == 0:
+            #             active_cell = sudoku_generator.Cell(' ', i, j, screen, (0, 0, 0))
+            #
+            #             if active_cell.draw():
+            #                 y, x = active_cell.draw()
+            #
+            #             continue
+            #         else:
+            #
+            #             active_cell = sudoku_generator.Cell(board[i][j], i, j, screen, (0, 0, 0))
+            #
+            #             if active_cell.draw():
+            #                 active_cell.draw()
 
             board_initialize.draw()
             board_initialize.highlight_cell(x, y)
@@ -179,6 +181,9 @@ if __name__ == "__main__":
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     enter_key = True
+                    if sudoku_generator.Board.check_for_win(board):
+                        game_running_screen = False
+                        win_screen = True
                 if event.key == pygame.K_1:
                     board[x][y] = 1
                 if event.key == pygame.K_2:

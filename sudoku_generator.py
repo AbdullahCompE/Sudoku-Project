@@ -430,10 +430,10 @@ class Board:
             pygame.draw.line(self.screen, self.line_color_black, ((self.width / 3) * i, 0),
                              ((self.width / 3) * i, self.height - self.menu_space), self.line_thickness_box)
 
-    def check_for_win(self):
+    def check_for_win(self, board):
         for row in range(9):
             for col in range(9):
-                num = self.board[row][col]
+                num = board[row][col]
                 if num == 0:
                     return False  # Found an empty cell
                 elif (not SudokuGenerator.valid_in_row(row, num) or
@@ -442,7 +442,8 @@ class Board:
                     return False  # Found a repeated number
         return True  # No empty or repeated numbers found
 
-
+    def copy_board(self, board):
+        return board.copy()
     def select(self, row, col):
         # deselect previous cell
         self.cells[self.selected_row][self.selected_col].selected = True
