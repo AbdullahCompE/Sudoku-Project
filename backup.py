@@ -83,7 +83,6 @@ class SudokuGenerator:
         if num not in self.board[row]:
             return True
         return False
-        pass
 
     '''
 	Determines if num is contained in the specified column (vertical) of the board
@@ -124,8 +123,6 @@ class SudokuGenerator:
                     return False
         return True
 
-    pass
-
     '''
     Determines if it is valid to enter num at (row, col) in the board
     This is done by checking that num is unused in the appropriate, row, column, and box
@@ -143,15 +140,6 @@ class SudokuGenerator:
         return False
 
         pass
-
-    def check_for_win(self):
-        for row in range(9):
-            for col in range(9):
-                num = self.board[row][col]
-                if not self.valid_in_row(row, num) or not self.valid_in_col(col, num) or not self.valid_in_box(row, col,
-                                                                                                               num):
-                    return False  # Found a repeated number
-        return True  # No repeated numbers found
 
     '''
     Fills the specified 3x3 box with values
@@ -288,6 +276,34 @@ def generate_sudoku(size, removed):
     return board
 
 
+class Click_cell:
+    def __init__(self, x, y, image, scale):
+        width = image.get_width()
+        height = image.get_height()
+        self.image = pygame.transform.scale(image, (int(width * scale), int(height * scale)))
+        self.rect = self.image.get_rect()
+        self.rect.topleft = (x, y)
+        self.clicked = False
+
+    def draw(self, surface):
+        action = False
+        # get mouse position
+        pos = pygame.mouse.get_pos()
+
+        if self.rect.collidepoint(pos):
+            if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
+                self.clicked = True
+                action = True
+
+            if pygame.mouse.get_pressed()[0] == 0:
+                self.clicked = False
+
+        surface.blit(self.image, (self.rect.x, self.rect.y))
+        return action
+
+    pass
+
+
 class Button:
     def __init__(self, x, y, image, scale):
         width = image.get_width()
@@ -323,6 +339,7 @@ class Cell:
 
         self.sketched_value = value
         self.selected = False
+        self.line_color_grey = (132, 132, 132)
 
     def set_cell_value(self, value):
         self.value = value
@@ -331,30 +348,60 @@ class Cell:
         self.sketched_value = value
 
     def draw(self):
-        # Draws this cell and its nonzero value, otherwise no value displayed
-        chip_font = pygame.font.Font(None, 60)
-        chip_surfs = [chip_font.render(str(i), 1, LINE_COLOR) for i in range(1, 10)]
-        chip_rects = [None] * 9
-        for i in range(9):
-            chip_rects[i] = chip_surfs[i].get_rect(
-                center=(self.col * SQUARE_SIZE + SQUARE_SIZE // 2,
-                        self.row * SQUARE_SIZE + SQUARE_SIZE // 2 + 3))
-            self.screen.blit(chip_surfs[i], chip_rects[i])
-        if self.selected:
-            pygame.draw.rect(screen, RED,
-                             pygame.Rect(
-                                 self.col * SQUARE_SIZE, self.row * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE), 3)
-            self.selected = False
-        if self.value != 0:
-            chip_rect = chip_rects[self.value - 1]
-            self.screen.blit(chip_surfs[self.value - 1], chip_rect)
-        pygame.display.update()
+        cell_size = 70  # Define the size of each cell
+        cell_x = self.col * cell_size
+        cell_y = self.row * cell_size
+        self.clicked = False
+
+        pygame.draw.rect(self.screen, self.line_color_grey, (cell_x, cell_y, cell_size, cell_size),
+                         1)  # Example rectangle for cell
+        font = pygame.font.Font('freesansbold.ttf', 50)
+        text = font.render(str(self.value), True, (0, 0, 0))  # Example cell value text
+        self.text_rect = text.get_rect(
+            center=(cell_x + cell_size // 2, cell_y + cell_size // 2))  # Example text position
+
+        action = False
+        # get mouse position
+        pos = pygame.mouse.get_pos()
+
+        if self.text_rect.collidepoint(pos):
+            if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
+                self.clicked = True
+                action = True
+                x, y = pos
+                return x // 70, y // 70
+
+            if pygame.mouse.get_pressed()[0] == 0:
+                self.clicked = False
+
+        # surface.blit(self.image, (self.rect.x, self.rect.y))
+        self.screen.blit(text, self.text_rect)  # Drawing the text on the cell
+
+    # def draw(self):
+    #     # Draws this cell and its nonzero value, otherwise no value displayed
+    #     chip_font = pygame.font.Font(None, 60)
+    #     chip_surfs = [chip_font.render(str(i), 1, LINE_COLOR) for i in range(1, 10)]
+    #     chip_rects = [None] * 9
+    #     for i in range(9):
+    #         chip_rects[i] = chip_surfs[i].get_rect(
+    #             center=(self.col * SQUARE_SIZE + SQUARE_SIZE // 2,
+    #                     self.row * SQUARE_SIZE + SQUARE_SIZE // 2 + 3))
+    #         self.screen.blit(chip_surfs[i], chip_rects[i])
+    #     if self.selected:
+    #         pygame.draw.rect(screen, RED,
+    #                          pygame.Rect(
+    #                              self.col * SQUARE_SIZE, self.row * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE), 3)
+    #         self.selected = False
+    #     if self.value != 0:
+    #         chip_rect = chip_rects[self.value - 1]
+    #         self.screen.blit(chip_surfs[self.value - 1], chip_rect)
+    #     pygame.display.update()
 
 
 class Board:
     def __init__(self, width, height, screen, difficulty):
-        self.width = width
-        self.height = height
+        self.width = width * 70
+        self.height = height * 70 + 100
         self.screen = screen
         self.difficulty = difficulty
         self.board = generate_sudoku(9, self.difficulty)
@@ -367,12 +414,10 @@ class Board:
 
     def draw(self):
         # Horizontal thin lines
-        for i in range(1, 9):
-            pygame.draw.line(self.screen, self.line_color_grey, ((self.width / 9) * i, 0),
-                             ((self.width / 9) * i, self.height - self.menu_space), self.line_thickness_cell)
-            # vertical thin lines
-            pygame.draw.line(self.screen, self.line_color_grey, (0, ((self.height - self.menu_space) / 9) * i),
-                             (self.width, ((self.height - self.menu_space) / 9) * i), self.line_thickness_cell)
+        # for i in range(1, 9):
+        #     pygame.draw.line(self.screen, self.line_color_grey, ((self.width / 9) * i, 0), ((self.width / 9) * i, self.height - self.menu_space), self.line_thickness_cell)
+        # # vertical thin lines
+        #     pygame.draw.line(self.screen, self.line_color_grey, (0, ((self.height-self.menu_space) / 9) * i), (self.width, ((self.height - self.menu_space)/ 9) * i), self.line_thickness_cell)
 
         # Thick lines
         for i in range(1, 4):
@@ -384,21 +429,35 @@ class Board:
             pygame.draw.line(self.screen, self.line_color_black, ((self.width / 3) * i, 0),
                              ((self.width / 3) * i, self.height - self.menu_space), self.line_thickness_box)
 
+    def check_for_win(self):
+        for row in range(9):
+            for col in range(9):
+                num = self.board[row][col]
+                if num == 0:
+                    return False  # Found an empty cell
+                elif (not SudokuGenerator.valid_in_row(row, num) or
+                      not SudokuGenerator.valid_in_col(col, num) or
+                      not SudokuGenerator.valid_in_box(row, col, num)):
+                    return False  # Found a repeated number
+        return True  # No empty or repeated numbers found
+
     def select(self, row, col):
-        # Marks the cell at (row, col) in the board as the current selected cell.
-        # Once a cell has been selected, the user can edit its value or sketched value
-        for i in range:
-            pass
+        # deselect previous cell
+        self.cells[self.selected_row][self.selected_col].selected = True
+
+        # select a new cell
+        if row in range(9) and col in range(9):
+            self.row = row
+            self.col = col
+        self.cells[self.selected_row][self.selected_col].selected = True
 
     def click(self, x, y):
-        if 0 <= x < self.width and 0 <= y < self.height:
-            cell_width = self.width // 9
-            cell_height = self.height // 9
-            row = y // cell_height
-            col = x // cell_width
-            return (row, col)
-        else:
-            return None
+        width_cell = self.width // 9
+        height_cell = self.height // 9
+        click_row = x // width_cell
+        click_col = y // height_cell
+        cell = (click_row, click_col)
+        return cell
 
     def clear(self):
 
@@ -416,17 +475,20 @@ class Board:
         for i in range(9):
             for j in range(9):
                 self.cells[row][col].reset_to_original()
+        pass
 
     def is_full(self):
         for i in range(9):
             for j in range(9):
                 if self.cells[row][col].get_value() == 0:
                     return False
+        pass
 
     def update_board(self):
         for i in range(9):
             for j in range(9):
                 self.cells[row][col].update()
+        pass
 
     def find_empty(self):
         for i in range(9):
@@ -443,15 +505,9 @@ class Board:
                     if value in values:
                         return False
                     values.add(value)
+        pass
 
-        for i in range(3):
-            for j in range(3):
-                values = set()
-                for row in range(i * 3, (i + 1) * 3):
-                    for col in range(j * 3, (j + 1) * 3):
-                        value = self.cells[row][col].get_value()
-                        if value != 0:
-                            if value in values:
-                                return False
-                            values.add(value)
-        return True
+    def highlight_cell(self, x, y):
+        pygame.draw.rect(self.screen, (255, 0, 0), (y * 70, x * 70, 70, 70), 3)
+
+

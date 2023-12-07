@@ -83,7 +83,6 @@ class SudokuGenerator:
         if num not in self.board[row]:
             return True
         return False
-        pass
 
     '''
 	Determines if num is contained in the specified column (vertical) of the board
@@ -123,8 +122,6 @@ class SudokuGenerator:
                 if self.board[i][j] == num:
                     return False
         return True
-
-    pass
 
     '''
     Determines if it is valid to enter num at (row, col) in the board
@@ -436,10 +433,14 @@ class Board:
         for row in range(9):
             for col in range(9):
                 num = self.board[row][col]
-                if not SudokuGenerator.valid_in_row(row, num) or not SudokuGenerator.valid_in_col(col, num) or not SudokuGenerator.valid_in_box(row, col,
-                                                                                                               num):
+                if num == 0:
+                    return False  # Found an empty cell
+                elif (not SudokuGenerator.valid_in_row(row, num) or
+                        not SudokuGenerator.valid_in_col(col, num) or
+                        not SudokuGenerator.valid_in_box(row, col, num)):
                     return False  # Found a repeated number
-        return True  # No repeated numbers found
+        return True  # No empty or repeated numbers found
+
 
     def select(self, row, col):
         # deselect previous cell
@@ -496,7 +497,6 @@ class Board:
             for j in range(9):
                 if self.cells[row][col].get_value() == 0:
                     return (row, col)
-        pass
 
     def check_board(self):
         for i in range(9):
