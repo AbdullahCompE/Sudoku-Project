@@ -436,11 +436,9 @@ class Board:
                 num = board[row][col]
                 if num == 0:
                     return False  # found an empty cell
-                elif num in board[row]:
-                    return False
                 else:
                     # check if number is valid in row
-                    if num in board[row]:
+                    if board[row].count(num) > 1:
                         return False
 
                     # check if number is valid in column
@@ -455,7 +453,7 @@ class Board:
                         for j in range(col_def, col_def + 3):
                             if board[i][j] == num:
                                 return False
-        return True  # No empty or repeated numbers found
+        return True  # no empty or repeated numbers found
 
 
     def select(self, row, col):

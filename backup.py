@@ -430,39 +430,6 @@ class Board:
             pygame.draw.line(self.screen, self.line_color_black, ((self.width / 3) * i, 0),
                              ((self.width / 3) * i, self.height - self.menu_space), self.line_thickness_box)
 
-    def valid_in_row(self, row, num):
-        if num not in self.board[row]:
-            return True
-        return False
-
-    def valid_in_col(self, col, num):
-        for row in range(self.row_length):
-            if num == self.board[row][col]:
-                return False
-        return True
-
-    def valid_in_box(self, row_start, col_start, num):
-        row_def = row_start - row_start % self.box_length
-        col_def = col_start - col_start % self.box_length
-        for i in range(row_def, row_def + self.box_length):
-            for j in range(col_def, col_def + self.box_length):
-                if self.board[i][j] == num:
-                    return False
-        return True
-
-    # def check_for_win(self, board):
-    #     for row in range(9):
-    #         for col in range(9):
-    #             num = self.board[row][col]
-    #             if num == 0:
-    #                 return False  # Found an empty cell
-    #             elif num in self.board[row]:
-    #                 return False
-    #             elif (not SudokuGenerator.valid_in_row(row, num) or
-    #                     not SudokuGenerator.valid_in_col(col, num) or
-    #                     not SudokuGenerator.valid_in_box(row, col, num)):
-    #                 return False  # Found a repeated number
-    #     return True  # No empty or repeated numbers found
 
     def check_for_win(self, board):
         for row in range(9):
@@ -470,11 +437,9 @@ class Board:
                 num = board[row][col]
                 if num == 0:
                     return False  # found an empty cell
-                elif num in board[row]:
-                    return False
                 else:
                     # check if number is valid in row
-                    if num in board[row]:
+                    if board[row].count(num) > 1:
                         return False
 
                     # check if number is valid in column
@@ -489,7 +454,8 @@ class Board:
                         for j in range(col_def, col_def + 3):
                             if board[i][j] == num:
                                 return False
-        return True  # No empty or repeated numbers found
+        return True  # no empty or repeated numbers found
+
 
     def select(self, row, col):
         # deselect previous cell
