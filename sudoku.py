@@ -230,6 +230,7 @@ if __name__ == "__main__":
     chip_9_surf_1 = chip_surfs_1[8]
 
 
+
     # option = draw_game_start(screen)
     # if option == 'easy':
     #     difficulty = 30

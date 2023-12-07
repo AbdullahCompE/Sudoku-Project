@@ -481,3 +481,4 @@ class Board:
     def highlight_cell(self, x, y):
         pygame.draw.rect(self.screen, (255, 0, 0), (y * 70, x * 70, 70, 70), 3)
 
+
