@@ -451,8 +451,6 @@ class Board:
         return cell
 
     def clear(self):
-
-
         pass
 
     def sketch(self, value):
@@ -466,34 +464,34 @@ class Board:
     def reset_to_original(self):
         for i in range(9):
             for j in range(9):
-                self.cells[row][col].reset_to_original()
+                self.cells[i][j].reset_to_original()
         pass
 
     def is_full(self):
         for i in range(9):
             for j in range(9):
-                if self.cells[row][col].get_value() == 0:
+                if self.cells[i][j].get_value() == 0:
                     return False
         pass
 
     def update_board(self):
         for i in range(9):
             for j in range(9):
-                self.cells[row][col].update()
+                self.cells[i][j].update()
         pass
 
     def find_empty(self):
         for i in range(9):
             for j in range(9):
-                if self.cells[row][col].get_value() == 0:
-                    return (row, col)
+                if self.cells[i][j].get_value() == 0:
+                    return (i, j)
         pass
 
     def check_board(self):
         for i in range(9):
             values = set()
             for j in range(9):
-                value = self.cells[row][col].get_value()
+                value = self.cells[i][j].get_value()
                 if value != 0:
                     if value in values:
                         return False
