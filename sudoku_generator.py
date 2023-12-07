@@ -381,12 +381,16 @@ class Board:
             return None
 
     def clear(self):
+
+
         pass
 
     def sketch(self, value):
+        self.sketch = value
         pass
 
     def place_number(self, value):
+        self.number = value
         pass
 
     def reset_to_original(self):
