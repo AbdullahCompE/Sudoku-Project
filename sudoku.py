@@ -125,7 +125,7 @@ if __name__ == "__main__":
             draw_text("Select Difficulty:", font_subtitle, text_color, 150, 350)
             # gets difficulty from the buttons on start menu
             if easy_button.draw(screen):
-                difficulty = 1
+                difficulty = 2
 
                 game_menu_screen = False
                 game_running_screen = True
@@ -149,8 +149,7 @@ if __name__ == "__main__":
 
 
 
-            print(board)
-            print(board_copied)
+
 
 
 
