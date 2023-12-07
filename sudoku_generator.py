@@ -432,6 +432,15 @@ class Board:
             pygame.draw.line(self.screen, self.line_color_black, ((self.width / 3) * i, 0),
                              ((self.width / 3) * i, self.height - self.menu_space), self.line_thickness_box)
 
+    def check_for_win(self):
+        for row in range(9):
+            for col in range(9):
+                num = self.board[row][col]
+                if not SudokuGenerator.valid_in_row(row, num) or not SudokuGenerator.valid_in_col(col, num) or not SudokuGenerator.valid_in_box(row, col,
+                                                                                                               num):
+                    return False  # Found a repeated number
+        return True  # No repeated numbers found
+
     def select(self, row, col):
         # deselect previous cell
         self.cells[self.selected_row][self.selected_col].selected = True
