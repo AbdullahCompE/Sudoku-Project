@@ -435,15 +435,29 @@ class Board:
             for col in range(9):
                 num = board[row][col]
                 if num == 0:
-                    return False  # Found an empty cell
-                elif (not SudokuGenerator.valid_in_row(row, num) or
-                        not SudokuGenerator.valid_in_col(col, num) or
-                        not SudokuGenerator.valid_in_box(row, col, num)):
-                    return False  # Found a repeated number
+                    return False  # found an empty cell
+                elif num in board[row]:
+                    return False
+                else:
+                    # check if number is valid in row
+                    if num in board[row]:
+                        return False
+
+                    # check if number is valid in column
+                    for r in range(9):
+                        if num == board[r][col]:
+                            return False
+
+                    # check if number is valid in box
+                    row_def = row - row % 3
+                    col_def = col - col % 3
+                    for i in range(row_def, row_def + 3):
+                        for j in range(col_def, col_def + 3):
+                            if board[i][j] == num:
+                                return False
         return True  # No empty or repeated numbers found
 
-    def copy_board(self, board):
-        return board.copy()
+
     def select(self, row, col):
         # deselect previous cell
         self.cells[self.selected_row][self.selected_col].selected = True
