@@ -9,6 +9,37 @@ import sys
 pygame.init()
 
 
+def check_for_win(board_1):
+
+    for row in range(9):
+        for col in range(9):
+            num = board_1[row][col]
+            if num == 0:
+                print('zero found')
+                return False  # found an empty cell
+            # check if number is valid in row
+            elif num in board_1[row]:
+                print('num in row')
+                return False
+
+
+
+
+            # check if number is valid in column
+            for r in range(9):
+                if num == board_1[r][col]:
+                    print('num in col')
+                    return False
+
+                # check if number is valid in box
+                row_def = row - row % 3
+                col_def = col - col % 3
+                for i in range(row_def, row_def + 3):
+                    for j in range(col_def, col_def + 3):
+                        if board_1[i][j] == num:
+                            print('num in box')
+                            return False
+    return True  # No empty or repeated numbers found
 # function to draw text
 def draw_text(text, font, text_col, x, y):
     img = font.render(text, True, text_col)
@@ -86,7 +117,7 @@ if __name__ == "__main__":
             draw_text("Select Difficulty:", font_subtitle, text_color, 150, 350)
             # gets difficulty from the buttons on start menu
             if easy_button.draw(screen):
-                difficulty = 30
+                difficulty = 0
 
                 game_menu_screen = False
                 game_running_screen = True
@@ -181,9 +212,11 @@ if __name__ == "__main__":
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     enter_key = True
-                    if sudoku_generator.Board.check_for_win(board):
+                    print(check_for_win(board))
+                    if check_for_win(board):
                         game_running_screen = False
                         win_screen = True
+
                 if event.key == pygame.K_1:
                     board[x][y] = 1
                 if event.key == pygame.K_2:
