@@ -331,7 +331,7 @@ class Button:
 
 
 class Cell:
-    def __init__(self, value, row, col, screen):
+    def __init__(self, value, row, col, screen, text_col):
         self.value = value
         self.row = row
         self.col = col
@@ -340,6 +340,7 @@ class Cell:
         self.sketched_value = value
         self.selected = False
         self.line_color_grey = (132, 132, 132)
+        self.text_col = text_col
 
     def set_cell_value(self, value):
         self.value = value
@@ -355,8 +356,8 @@ class Cell:
 
         pygame.draw.rect(self.screen, self.line_color_grey, (cell_x, cell_y, cell_size, cell_size),
                          1)  # Example rectangle for cell
-        font = pygame.font.Font('freesansbold.ttf', 50)
-        text = font.render(str(self.value), True, (0, 0, 0))  # Example cell value text
+        font = pygame.font.Font('freesansbold.ttf', 50,)
+        text = font.render(str(self.value), True, self.text_col)  # Example cell value text
         self.text_rect = text.get_rect(
             center=(cell_x + cell_size // 2, cell_y + cell_size // 2))  # Example text position
 
