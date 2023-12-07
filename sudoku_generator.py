@@ -464,18 +464,40 @@ class Board:
         pass
 
     def reset_to_original(self):
+        for i in range(9):
+            for j in range(9):
+                self.cells[row][col].reset_to_original()
         pass
 
     def is_full(self):
+        for i in range(9):
+            for j in range(9):
+                if self.cells[row][col].get_value() == 0:
+                    return False
         pass
 
     def update_board(self):
+        for i in range(9):
+            for j in range(9):
+                self.cells[row][col].update()
         pass
 
     def find_empty(self):
+        for i in range(9):
+            for j in range(9):
+                if self.cells[row][col].get_value() == 0:
+                    return (row, col)
         pass
 
     def check_board(self):
+        for i in range(9):
+            values = set()
+            for j in range(9):
+                value = self.cells[row][col].get_value()
+                if value != 0:
+                    if value in values:
+                        return False
+                    values.add(value)
         pass
 
     def highlight_cell(self, x, y):
